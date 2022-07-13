@@ -143,6 +143,10 @@ resource shortenerApi 'Microsoft.App/containerApps@2022-03-01' = {
               name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
               value: appInsights.properties.ConnectionString
             }
+            {
+              name: 'STORAGE_CONNECTION_STRING'
+              value: cosmosAccount.listConnectionStrings().connectionStrings[0].connectionString
+            }
           ]
         }
       ]
