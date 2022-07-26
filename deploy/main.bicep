@@ -4,13 +4,15 @@ param location string = resourceGroup().location
 @description('Name of our application.')
 param applicationName string = uniqueString(resourceGroup().id)
 
+@description('Container image for the Shortener API')
+param shortenerImageName string
+
 var containerRegistryName = '${applicationName}acr'
 var logAnalyticsWorkspaceName = '${applicationName}law'
 var appInsightsName = '${applicationName}ai'
 var containerAppEnvironmentName = '${applicationName}env'
 var cosmosAccountName = '${applicationName}db'
-var tableName = 'urls'
-var shortenerApiName = 'shortener-api'
+var shortenerApiName = 'urlshortener'
 var targetPort = 80
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-12-01-preview' = {
@@ -71,19 +73,6 @@ resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
   }
 }
 
-resource cosmosTable 'Microsoft.DocumentDB/databaseAccounts/tables@2022-05-15' = {
-  parent: cosmosAccount
-  name: tableName
-  properties: {
-    resource: {
-      id: tableName
-    }
-    options: {
-      throughput: 400
-    }
-  }
-}
-
 resource environment 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: containerAppEnvironmentName
   location: location
@@ -129,7 +118,7 @@ resource shortenerApi 'Microsoft.App/containerApps@2022-03-01' = {
       containers: [
         {
           name: shortenerApiName
-          image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+          image: shortenerImageName
           env: [
             {
               name: 'ASPNETCORE_ENVIRONMENT'
