@@ -134,7 +134,7 @@ resource shortenerApi 'Microsoft.App/containerApps@2022-03-01' = {
             }
             {
               name: 'STORAGE_CONNECTION_STRING'
-              value: 'DefaultEndpointsProtocol=https;AccountName=${cosmosAccount.name};AccountKey=${listKeys(cosmosAccount.id, cosmosAccount.apiVersion).primaryKey};TableEndpoint=${cosmosAccount.properties.documentEndpoint};'
+              value: 'DefaultEndpointsProtocol=https;AccountName=${cosmosAccount.name};AccountKey=${listKeys(cosmosAccount.id, cosmosAccount.apiVersion).primaryMasterKey};TableEndpoint=${cosmosAccount.properties.documentEndpoint};'
             }
           ]
         }
