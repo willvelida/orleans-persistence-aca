@@ -5,7 +5,7 @@ param location string = resourceGroup().location
 param applicationName string = uniqueString(resourceGroup().id)
 
 @description('Container image for the Shortener API')
-param shortenerImageName string
+param shortenerImageName string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 var containerRegistryName = '${applicationName}acr'
 var logAnalyticsWorkspaceName = '${applicationName}law'
